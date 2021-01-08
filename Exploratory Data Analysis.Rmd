@@ -1,8 +1,11 @@
 ---
 title: "Exploratory Data Analysis"
-author: "Sana Rasheed"
-date: "October 20, 2020"
-output: html_document
+author: "Saira Kaleem"
+date: "January 08, 2021"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
 ---
 
 ##### NOTE: 
@@ -27,12 +30,23 @@ head(airquality)
 ```
 
 ```{r }
-# START YOUR CODE FROM HERE
+##Generating Five point summary
+summary(airquality)
+
+##Histogram of temprature/Adding labels and color
+hist(airquality$Temp, col="green",main = "Histogram of Temprature",breaks = 100)
+
+##Distribution of data for Wind
+boxplot(airquality$Wind,col = "wheat", main = "Distribution for Wind")
+
 ```
 
 
 ```{r }
-
+##Relaionship between Solar.R and Ozone
+with(airquality, plot(Solar.R, Ozone, main="Relaionship between Solar.R and Ozone",col="red"))
+model <- lm(Ozone ~ Solar.R, airquality) 
+abline(model, lwd = 2)
 ```
 
 ### Good Job! You have completed this section!
@@ -56,15 +70,34 @@ library(lattice)
 library(ggplot2)
 
 head(state.x77)
-#head(state.region)
+head(state.region)
 ```
 
 ```{r }
-# START YOUR CODE FROM HERE
+state.x77<-as.data.frame(state.x77)
+state.x77$state_region<-state.region
+state.x77$'Life Exp'->state.x77$Life_Exp
+##Relationship between Income nad Illiteracy
+Income_Illiteracy <- ggplot(state.x77, aes(Illiteracy,Income)) + 
+                     geom_point(alpha=1/2,size=4) + 
+                     geom_smooth(se=FALSE, col="steelblue") + 
+                     theme_bw(base_family = "Avenir", base_size = 10) + 
+                     labs(title = "Relationship between Income and illiteracy")
+print(Income_Illiteracy)
+
+##Visualize the relationship between Population, region and life expectancy (Life.Exp)
+Population_life <- ggplot(state.x77, aes(Life_Exp,Population)) + geom_point(alpha=1/2,size=4,color="red") +                                                 geom_smooth(se=FALSE,col="green")+              
+                   facet_wrap(facets = vars(state_region)) + theme_bw(base_family = "Avenir", base_size = 10) + 
+                   labs(x = "Life Expectancy") +
+                   labs(y = "Population") +
+                   labs(title = "Relationship between Population, region and life expectancy")
+print(Population_life)
+
 ```
 
 
-```{r }
+```{r}
+
 
 ```
 
@@ -82,10 +115,16 @@ head(women)
 ```
 
 ```{r }
-# START YOUR CODE FROM HERE
+g <- ggplot(women, aes(weight,height))
+g + geom_point() + geom_smooth(method = lm, se=FALSE) + theme_bw(base_family = "Avenir", base_size = 10)
+
 ```
 
 ```{r }
+##Exporting the charts and results to a pdf file. 
+pdf("g.pdf")
+g <- ggplot(women, aes(weight,height))
+g + geom_point() + geom_smooth(method = lm)
 
 ```
 
@@ -114,18 +153,45 @@ head(longley)
 ```
 
 ```{r }
-# START YOUR CODE FOR GRAPH-1
+##Using the longley dataset, plot the relationship between Umployed and GNP
+g <- ggplot(longley, aes(Unemployed,GNP)) + 
+     geom_point(alpha=1/2,color="purple",size=4) + 
+     geom_smooth(se=FALSE,color="black",size=1,lty=15) +
+     theme_bw(base_family = "Avenir", base_size = 10)
+    
+print(g)
+```
+
+```{r }
+##As a scatter plot, plot out Unemployed values as blue dots and Employed values as green dots
+g <- ggplot(longley, aes(Year,Unemployed)) +
+     geom_point(alpha=1/2,color="blue",size=4)+
+     theme_bw(base_family = "Avenir", base_size = 10)+
+     labs(title="Unemployed people")
+    
+print(g)
+
+g <- ggplot(longley, aes(Year,Employed)) +
+     geom_point(alpha=1/2,color="green",size=4) +
+     theme_bw(base_family = "Avenir", base_size = 10) +
+     labs(title="Employed people")
+print(g)
 
 ```
 
 ```{r }
-# START YOUR CODE fFOR GRAPH-2
+longley <- as.data.frame(longley)
+## 3.
+Armed.Forces.Unemployed.Rel <- c("N","N","N","N","Y","Y","Y","N","Y","Y","N","N","N","N","N","N")
+longley$Armed.Forces.Unemployed.Rel <- Armed.Forces.Unemployed.Rel
 
-```
 
-```{r }
-# START YOUR CODE FOR GRAPH-3
-
+g <- ggplot(longley, aes(Armed.Forces,Unemployed)) + 
+     geom_point(alpha=1/2,aes(color = Armed.Forces.Unemployed.Rel),size=4)+
+     geom_smooth(se=FALSE,lty=10) + 
+     theme_bw(base_family = "Avenir", base_size = 10)+
+     labs(title="Relationship between Unemployed and Armed Forces")
+print(g)
 ```
 
 
