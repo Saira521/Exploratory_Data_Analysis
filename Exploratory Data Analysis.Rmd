@@ -182,8 +182,7 @@ print(g)
 ```{r }
 longley <- as.data.frame(longley)
 ## 3.
-Armed.Forces.Unemployed.Rel <- c("N","N","N","N","Y","Y","Y","N","Y","Y","N","N","N","N","N","N")
-longley$Armed.Forces.Unemployed.Rel <- Armed.Forces.Unemployed.Rel
+longley$Armed.Forces.Unemployed.Rel <- ifelse(longley$Armed.Forces>longley$Unemployed, "Y", "N")
 
 
 g <- ggplot(longley, aes(Armed.Forces,Unemployed)) + 
